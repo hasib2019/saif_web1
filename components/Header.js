@@ -4,13 +4,48 @@ import Link from 'next/link';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+
+  const toggleDropdown = (index) => {
+    if (activeDropdown === index) {
+      setActiveDropdown(null);
+    } else {
+      setActiveDropdown(index);
+    }
+  };
 
   const menuItems = [
     { name: 'Home', href: '/', active: true },
-    { name: 'Company', href: '/company' },
-    { name: 'Products', href: '/products' },
+    { 
+      name: 'Company', 
+      href: '#',
+      hasDropdown: true,
+      dropdownItems: [
+        { name: 'About Us', href: '/company/about-us' },
+        { name: 'Management', href: '/company/management' },
+        { name: 'Organogram', href: '/company/organogram' },
+        { name: 'Fact Sheet', href: '/company/fact-sheet' },
+        { name: 'Business Partners', href: '/company/business-partners' },
+      ] 
+    },
+    { 
+      name: 'Products', 
+      href: '#',
+      hasDropdown: true,
+      dropdownItems: [
+        { name: 'Barudan', href: '/products/barudan' },
+        { name: 'Graphtec', href: '/products/graphtec' },
+        { name: 'Lectra', href: '/products/lectra' },
+        { name: 'Mathis', href: '/products/mathis' },
+        { name: 'Ngai Shing', href: '/products/ngai-shing' },
+        { name: 'Oshima', href: '/products/oshima' },
+        { name: 'Panta Rei', href: '/products/panta-rei' },
+        { name: 'Santex Rimar Group', href: '/products/santex-rimar-group' },
+        { name: 'Sclavos', href: '/products/sclavos' },
+      ] 
+    },
     { name: 'Media', href: '/media' },
-    { name: 'Management', href: '/management' },
+    { name: 'Recognitions', href: '/recognitions' },
     { name: 'Career', href: '/career' },
     { name: 'Contact', href: '/contact' },
   ];
@@ -35,18 +70,50 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {menuItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${
-                  item.active
-                    ? 'text-red-400 border-b-2 border-red-400'
-                    : 'text-gray-300 hover:text-white hover:bg-gray-700 rounded-md'
-                }`}
-              >
-                {item.name}
-              </Link>
+            {menuItems.map((item, index) => (
+              <div key={item.name} className="relative">
+                {item.hasDropdown ? (
+                  <>
+                    <button 
+                      onClick={() => toggleDropdown(index)}
+                      className={`px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center ${
+                        activeDropdown === index
+                          ? 'text-red-400 border-b-2 border-red-400'
+                          : 'text-gray-300 hover:text-white hover:bg-gray-700 rounded-md'
+                      }`}
+                    >
+                      {item.name}
+                      <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    {activeDropdown === index && (
+                      <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                        {item.dropdownItems.map((dropdownItem) => (
+                          <Link
+                            key={dropdownItem.name}
+                            href={dropdownItem.href}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          >
+                            {dropdownItem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                      item.active
+                        ? 'text-red-400 border-b-2 border-red-400'
+                        : 'text-gray-300 hover:text-white hover:bg-gray-700 rounded-md'
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                )}
+              </div>
             ))}
           </nav>
 
@@ -76,18 +143,50 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-700">
             <nav className="space-y-2">
-              {menuItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={`block px-3 py-2 text-sm font-medium transition-colors duration-200 ${
-                    item.active
-                      ? 'text-red-400 bg-gray-700 rounded-md'
-                      : 'text-gray-300 hover:text-white hover:bg-gray-700 rounded-md'
-                  }`}
-                >
-                  {item.name}
-                </Link>
+              {menuItems.map((item, index) => (
+                <div key={item.name}>
+                  {item.hasDropdown ? (
+                    <>
+                      <button
+                        onClick={() => toggleDropdown(index)}
+                        className={`flex justify-between items-center w-full px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                          activeDropdown === index
+                            ? 'text-red-400 bg-gray-700 rounded-md'
+                            : 'text-gray-300 hover:text-white hover:bg-gray-700 rounded-md'
+                        }`}
+                      >
+                        {item.name}
+                        <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      {activeDropdown === index && (
+                        <div className="pl-4 mt-1 space-y-1">
+                          {item.dropdownItems.map((dropdownItem) => (
+                            <Link
+                              key={dropdownItem.name}
+                              href={dropdownItem.href}
+                              className="block px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md"
+                            >
+                              {dropdownItem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className={`block px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                        item.active
+                          ? 'text-red-400 bg-gray-700 rounded-md'
+                          : 'text-gray-300 hover:text-white hover:bg-gray-700 rounded-md'
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  )}
+                </div>
               ))}
             </nav>
           </div>
