@@ -119,7 +119,7 @@ export default function Recognitions() {
                     </div>
                   </div>
                   <p className="text-gray-700">
-                    "We've been working with aamra resources for over 5 years now. Their dedication to quality and service excellence has been instrumental to our success."
+                    We&apos;ve been working with aamra resources for over 5 years now. Their dedication to quality and service excellence has been instrumental to our success.
                   </p>
                 </div>
 
@@ -132,7 +132,7 @@ export default function Recognitions() {
                     </div>
                   </div>
                   <p className="text-gray-700">
-                    "The technical expertise and support provided by aamra resources has helped us optimize our production processes and improve efficiency."
+                    The technical expertise and support provided by aamra resources has helped us optimize our production processes and improve efficiency.
                   </p>
                 </div>
               </div>
